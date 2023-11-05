@@ -1,14 +1,9 @@
+import { RULES_VALIDATION } from "~/constants/application"
+
 export const useValidator = () => {
   return {
     required: (value: string | number) => {
       return !!value || `未入力です。`
-    },
-    isKanaCharacters: (value: string) => {
-      return (
-        !value ||
-        /^[ぁ-んァ-ン一-龥]/.test(value) ||
-        'カタカナでご入力ください。'
-      )
     },
     isNumber: (value: string) => {
       return !value || /^\d+$/.test(value) || '数字でご入力ください。'
@@ -28,6 +23,10 @@ export const useValidator = () => {
           !value || value.length <= max || `${max}文字以下入力してください。`
         )
       }
-    }
+    },
+    isInvalidEmail(email: string) {
+      const emailRegex = RULES_VALIDATION.EMAIL_FORMAT;
+      return emailRegex.test(email);
+    },
   }
 }

@@ -20,6 +20,7 @@
               <div class="row g-6 mb-6">
                   
               </div>
+              <!-- <TableContent /> -->
               <NuxtPage />
           </div>
       </main>
@@ -42,7 +43,7 @@ export default {
     let hasLogin = ref(false);
 
     return {
-      
+      hasLogin
     };
   }
 };
