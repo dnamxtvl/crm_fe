@@ -1,3 +1,7 @@
+import { fileURLToPath } from 'node:url'
+// import '@core/scss/template/index.scss'
+// import '@styles/styles.scss'
+
 export default defineNuxtConfig({
   devtools: { enabled: false },
   ssr: false,
@@ -9,6 +13,8 @@ export default defineNuxtConfig({
   },
   css: [
     'bootstrap/dist/css/bootstrap.css',
+    'assets/styles.scss',
+    'assets/index.scss'
   ],
   modules: [
     '@element-plus/nuxt',
@@ -23,8 +29,13 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@/assets/scss/element/index.scss" as element;`,
+          additionalData: `@use "/assets/scss/element/index.scss" as element;`,
         },
+      },
+    },
+    resolve: {
+      alias: {
+        '@configured-variables': fileURLToPath(new URL('./@styles/variables/_template.scss', import.meta.url)),
       },
     },
   },
