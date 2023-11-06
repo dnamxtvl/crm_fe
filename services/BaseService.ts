@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie';
+import helperApp from "~/utils/helper";
 
 interface ResponseData {
     data: any;
@@ -31,30 +31,24 @@ export default class BaseService {
         if (error !== undefined && e.response !== undefined) {
             if (e.response.hasOwnProperty('status')) {
                 if (e.response.status == 401) {
-                    Cookies.remove('access_token');
-                    Cookies.remove('role');
-                    const previousUserId = Cookies.get('user_id') || '';
+                    //remove token from cookie
                     const queryString = `${window.location.pathname}${window.location.search}`;
-                    Cookies.set('previous_user_id', previousUserId, {
-                        expires: 90,
-                    });
-                    Cookies.set('redirectPath', queryString, {
-                        expires: 90,
-                    });
                     window.location.href = 'auth/login';
                     return;
                 }
 
-                let errors: Record<string, string> = {};
+                let errors: any;
                 if (e.response.data.errors) {
                     errors = Object.fromEntries(
                         Object.entries(e.response.data.errors).map(([key, value]: [string, string[]]) => [key, value[0]])
                     );
+                } else {
+                    errors = [helperApp.getErrorMessage(e.response.data.message)];
                 }
                 error({
                     code: e.response.status,
                     error: errors,
-                    responseCode: e.response.data.responseCode,
+                    responseCode: e.response.data.code ?? 0,
                 });
             }
         }

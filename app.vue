@@ -1,29 +1,29 @@
 <template>
-<div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary" v-if="hasLogin">
+<div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary" v-if="isLoggined">
   <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg" id="navbarVertical">
-      <div class="container-fluid">
-          <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-          <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="#">
-              <img src="https://preview.webpixels.io/web/img/logos/clever-primary.svg" alt="...">
-          </a>
-          <SidebarMobile />
-          <Sidebar />
-      </div>
+    <div class="container-fluid">
+      <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="#">
+          <img src="https://preview.webpixels.io/web/img/logos/clever-primary.svg" alt="...">
+      </a>
+      <SidebarMobile />
+      <Sidebar />
+    </div>
   </nav>
   <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-      <Navbar />
-      <main class="py-6 bg-surface-secondary">
-          <div class="container-fluid">
-              <!-- Card stats -->
-              <div class="row g-6 mb-6">
-                  
-              </div>
-              <!-- <TableContent /> -->
-              <NuxtPage />
-          </div>
-      </main>
+    <Navbar />
+    <main class="py-6 bg-surface-secondary">
+      <div class="container-fluid">
+        <!-- Card stats -->
+        <div class="row g-6 mb-6">
+            
+        </div>
+        <!-- <TableContent /> -->
+        <NuxtPage />
+      </div>
+    </main>
   </div>
 </div>
 <div v-else>
@@ -37,16 +37,19 @@ import Sidebar from "./components/common/Sidebar.vue";
 import SidebarMobile from "./components/common/SidebarMobile.vue";
 import TableContent from "./components/common/TableContent.vue";
 import { defineComponent, onMounted, getCurrentInstance, ref, nextTick } from 'vue';
-export default {
+import { useMainStore } from '~/store';
+
+export default defineComponent({
   components: { Navbar, Sidebar, SidebarMobile, TableContent },
   setup() {
-    let hasLogin = ref(false);
+    const store = useMainStore();
+    let isLoggined = ref(computed(() => store.$state.isLoggedIn));
 
     return {
-      hasLogin
+      isLoggined
     };
   }
-};
+});
 </script>
 
 <style lang="scss">

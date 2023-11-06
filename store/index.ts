@@ -1,31 +1,25 @@
-// store/index.js
+import { defineStore } from 'pinia';
+import LocalStorageManager from '~/utils/localStorage';
 
-// Import Vuex và tạo cửa hàng Vuex
-import Vuex from 'vuex';
-
-// Import các module Vuex riêng lẻ
-import cart from './cart';
-
-// Tạo cửa hàng Vuex
-const store = () => {
-  return new Vuex.Store({
-    // Cấu hình chung cho cửa hàng Vuex
-    state: {
-      // Định nghĩa trạng thái chung ở đây nếu cần
-    },
-    mutations: {
-      // Định nghĩa mutations chung ở đây nếu cần
-    },
-    actions: {
-      // Định nghĩa actions chung ở đây nếu cần
+export const useMainStore = defineStore({
+  id: 'app',
+  state: () => ({
+    isLoggedIn: LocalStorageManager.getItemWithKey('isLoggedIn') ?? false,
+    user: null,
+  }),
+  getters: {
+    isLoggedIn: (state: any) => state.isLoggedIn,
+    user: (state: any) => state.user
+  },
+  actions: {
+    login(state: any, user: any){
+      state.isLoggedIn = true
+      state.user = user
     },
 
-    // Các module Vuex riêng lẻ
-    modules: {
-      cart, // Module Vuex "cart"
-      // Thêm các module Vuex khác nếu cần
+    logout(state: any) {
+      state.isLoggedIn = false
+      state.user = null
     },
-  });
-};
-
-export default store;
+  },
+});
