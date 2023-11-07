@@ -24,3 +24,6 @@
     </nuxt-link>
   </ul>
 </template>
+<style lang="scss">
+
+</style>
