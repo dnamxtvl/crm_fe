@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   },
   css: [
     'bootstrap/dist/css/bootstrap.css',
+    'assets/scss/application.scss'
   ],
   modules: [
     '@element-plus/nuxt',

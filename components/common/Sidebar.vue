@@ -3,14 +3,14 @@
     <!-- Navigation -->
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="bi bi-house"></i> Dashboard
-            </a>
+         <nuxt-link class="nav-link" to="/" exact-active-class="active-nav-link">
+            <i class="bi bi-house"></i> Dashboard
+         </nuxt-link>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="bi bi-bar-chart"></i> Analitycs
-            </a>
+         <nuxt-link class="nav-link" to="" exact-active-class="active-nav-link">
+            <i class="bi bi-bar-chart"></i> Analitycs
+         </nuxt-link>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">
@@ -47,3 +47,6 @@
     </ul>
 </div>
 </template>
+<style lang="scss">
+
+</style>
