@@ -1,51 +1,28 @@
 <template>
-  <div class="collapse navbar-collapse" id="sidebarCollapse">
-    <!-- Navigation -->
-    <ul class="navbar-nav">
-        <li class="nav-item">
-         <nuxt-link class="nav-link" to="/" exact-active-class="active-nav-link">
-            <i class="bi bi-house"></i> Dashboard
-         </nuxt-link>
-        </li>
-        <li class="nav-item">
-         <nuxt-link class="nav-link" to="" exact-active-class="active-nav-link">
-            <i class="bi bi-bar-chart"></i> Analitycs
-         </nuxt-link>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="bi bi-chat"></i> Messages
-                <span class="badge bg-soft-primary text-primary rounded-pill d-inline-flex align-items-center ms-auto">6</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="bi bi-bookmarks"></i> Collections
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="bi bi-people"></i> Users
-            </a>
-        </li>
-    </ul>
-    <!-- Divider -->
-    <hr class="navbar-divider my-5 opacity-20">
-    <!-- Navigation -->
-    <div class="mt-auto"></div>
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="bi bi-person-square"></i> Account
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="bi bi-box-arrow-left"></i> Logout
-            </a>
-        </li>
-    </ul>
-</div>
+  <ul class="menu-inner py-1">
+    <!-- Apps & Pages -->
+    <li class="menu-header small text-uppercase">
+      <span class="menu-header-text">Apps &amp; Pages</span>
+    </li>
+    <nuxt-link class="menu-item" to="/" exact-active-class="active">
+      <div class="menu-link">
+        <i class="menu-icon tf-icons ti ti-mail"></i>
+        <div data-i18n="Email">Email</div>
+      </div>
+    </nuxt-link>
+    <nuxt-link class="menu-item" to="/chat" exact-active-class="active">
+      <div class="menu-link">
+        <i class="menu-icon tf-icons ti ti-mail"></i>
+        <div data-i18n="Email">Chat</div>
+      </div>
+    </nuxt-link>
+    <nuxt-link class="menu-item" to="/calender" exact-active-class="active">
+      <div class="menu-link">
+        <i class="menu-icon tf-icons ti ti-mail"></i>
+        <div data-i18n="Email">Calender</div>
+      </div>
+    </nuxt-link>
+  </ul>
 </template>
 <style lang="scss">
 

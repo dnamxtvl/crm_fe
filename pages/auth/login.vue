@@ -5,7 +5,7 @@
         <h2 class="text-center text-dark mt-5">Đăng Nhập</h2>
         <div class="card my-5">
           <form class="card-body cardbody-color p-lg-5" @submit="login">
-            <div class="text-center">
+            <div class="text-center d-flex justify-content-center">
               <img src="https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295397__340.png" class="img-fluid profile-image-pic-login img-thumbnail rounded-circle my-3"
                 width="200" alt="profile">
             </div>
