@@ -1,4 +1,7 @@
 import helperApp from "~/utils/helper";
+import LocalStorageManager from "~/utils/localStorage";
+import { useMainStore } from '~/store';
+import axios from 'axios';
 
 interface ResponseData {
     data: any;
@@ -11,11 +14,9 @@ interface ErrorResponse {
 }
 
 export default class BaseService {
-    private api: any;
     private prefix: string;
 
-    constructor(axios: any, prefix: string) {
-        this.api = axios;
+    constructor(prefix: string) {
         this.prefix = prefix;
     }
 
@@ -31,10 +32,9 @@ export default class BaseService {
         if (error !== undefined && e.response !== undefined) {
             if (e.response.hasOwnProperty('status')) {
                 if (e.response.status == 401) {
-                    //remove token from cookie
                     const queryString = `${window.location.pathname}${window.location.search}`;
-                    window.location.href = 'auth/login';
-                    return;
+                    helperApp.logOutWhenTokenExpired();
+                    return navigateTo('/auth/login');
                 }
 
                 let errors: any;
@@ -55,8 +55,9 @@ export default class BaseService {
     }
 
     async get(endpoint: string, success: (json: any) => void, error: (error: ErrorResponse) => void) {
+        const apiInstance = this.getInstanceAxios();
         try {
-            const response = await this.api.get(this.prefix + endpoint);
+            const response = await this.getInstanceAxios().get(this.prefix + endpoint);
             const json = this.processResponse(response);
             success(json);
         } catch (e) {
@@ -71,7 +72,7 @@ export default class BaseService {
         error: (error: ErrorResponse) => void
     ) {
         try {
-            const response = await this.api.post(this.prefix + endpoint, params);
+            const response = await this.getInstanceAxios().post(this.prefix + endpoint, params);
             const json = this.processResponse(response);
             success(json);
         } catch (e) {
@@ -86,7 +87,7 @@ export default class BaseService {
         error: (error: ErrorResponse) => void
     ) {
         try {
-            const response = await this.api.put(this.prefix + endpoint, params);
+            const response = await this.getInstanceAxios().put(this.prefix + endpoint, params);
             const json = this.processResponse(response);
             success(json);
         } catch (e) {
@@ -96,7 +97,7 @@ export default class BaseService {
 
     async delete(endpoint: string, data: Record<string, any> = {}, success: (json: any) => void, error: (error: ErrorResponse) => void) {
         try {
-            const response = await this.api.delete(this.prefix + endpoint, { data });
+            const response = await this.getInstanceAxios().delete(this.prefix + endpoint, { data });
             const json = this.processResponse(response);
             success(json);
         } catch (e) {
@@ -111,7 +112,7 @@ export default class BaseService {
         error: (error: ErrorResponse) => void
     ) {
         try {
-            const response = await this.api.patch(this.prefix + endpoint, params);
+            const response = await this.getInstanceAxios().patch(this.prefix + endpoint, params);
             const json = this.processResponse(response);
             success(json);
         } catch (e) {
@@ -131,5 +132,28 @@ export default class BaseService {
 
         if (query) return '?' + str.join('&') + '&' + query;
         return '?' + str.join('&');
+    }
+
+    getInstanceAxios = () => {
+        let store = useMainStore();
+        const instance = axios.create({
+            baseURL: LocalStorageManager.getItemWithKey('BACKEND_URL_APP_VUE') ?? BACKEND_URL_DEFAULT,
+            timeout: 60000,
+            headers: {'Authorization': `Bearer ${store.$state.token}`}
+        });
+
+        instance.defaults.headers.post['Content-Type'] = 'application/json';
+        instance.defaults.headers.get['Content-Type'] = 'application/json';
+        instance.defaults.headers.put['Content-Type'] = 'application/json';
+        instance.defaults.headers.delete['Content-Type'] = 'application/json';
+        instance.defaults.headers.delete['Content-Type'] = 'application/json';
+        
+        instance.defaults.headers.post['Accept'] = 'application/json';
+        instance.defaults.headers.get['Accept'] = 'application/json';
+        instance.defaults.headers.put['Accept'] = 'application/json';
+        instance.defaults.headers.delete['Accept'] = 'application/json';
+        instance.defaults.headers.delete['Accept'] = 'application/json';
+
+        return instance;
     }
 }

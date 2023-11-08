@@ -4,10 +4,10 @@
       <!-- Menu -->
       <aside
         id="layout-menu"
-        class="layout-menu menu-vertical menu bg-menu-theme"
+        class="layout-menu menu-vertical menu bg-menu-theme" :class="{ activeSideBar: isDisplaySideBar, activeSideBarMobile: !isDisplaySideBar}"
       >
         <div class="app-brand demo app-brand-demo">
-          <a href="index.html" class="app-brand-link">
+          <span class="app-brand-link">
             <span class="app-brand-logo demo">
               <svg
                 width="32"
@@ -45,17 +45,10 @@
               </svg>
             </span>
             <span class="app-brand-text demo menu-text fw-bold">Vuexy</span>
-          </a>
-
-          <a
-            href="javascript:void(0);"
-            class="layout-menu-toggle menu-link text-large ms-auto"
-          >
-            <i
-              class="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle"
-            ></i>
+          </span>
+          <span class="layout-menu-toggle menu-link text-large ms-auto ms-2 cursor-pointer" @click="closeSideBarMobile">
             <i class="ti ti-x d-block d-xl-none ti-sm align-middle"></i>
-          </a>
+          </span>
         </div>
         <div class="menu-inner-shadow"></div>
         <Sidebar />
@@ -63,7 +56,7 @@
       <!-- / Menu -->
       <!-- Layout container -->
       <div class="layout-page">
-        <Navbar />
+        <Navbar :displaySideBar="isDisplaySideBar" @closeOrOpenSideBar="displayOrNoneSideBar" />
         <div class="content-wrapper">
           <NuxtPage />
           <div class="content-backdrop fade"></div>
@@ -94,10 +87,31 @@ export default defineComponent({
   setup() {
     const store = useMainStore();
     let isLoggined = ref(computed(() => store.$state.isLoggedIn));
+    let isDisplaySideBar = ref(false);
+
+    const displayOrNoneSideBar = (value) => {
+      isDisplaySideBar.value = value
+    }
+
+    const closeSideBarMobile = () => {
+      isDisplaySideBar.value = !isDisplaySideBar.value;
+    }
 
     return {
       isLoggined,
+      closeSideBarMobile,
+      displayOrNoneSideBar,
+      isDisplaySideBar
     };
   },
 });
 </script>
+<style lang="scss" scoped>
+.activeSideBar {
+  width: 0;
+}
+
+.activeSideBarMobile {
+  transform: translate3d(0, 0, 0) !important;
+}
+</style>

@@ -1,20 +1,23 @@
 import { EXPIRES_COOKIE_DAY } from "~/constants/application";
 
 export default class LocalStorageManager {
-    static setItemWithKey = (key: string, value: any) => {
-      const now = new Date();
-      const dayExpires = EXPIRES_COOKIE_DAY;
-      const minutes = dayExpires * 24 * 60;
-      const item = {
-        value: value,
-        expiry: now.getTime() + minutes * 60 * 1000,
-      };
-      try {
+  static setItemWithKey = async (key: string, value: any) => {
+    const now = new Date();
+    const dayExpires = EXPIRES_COOKIE_DAY;
+    const minutes = dayExpires * 24 * 60;
+    const item = {
+      value: value,
+      expiry: now.getTime() + minutes * 60 * 1000,
+    };
+    try {
+      await new Promise((resolve) => {
         localStorage.setItem(key, JSON.stringify(item));
-      } catch (error) {
-        return;
-      }
+        resolve();
+      });
+    } catch (error) {
+      console.error("Error setting item in localStorage:", error);
     }
+  }
   
     static getItemWithKey = (key: string) => {
       try {

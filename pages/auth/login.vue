@@ -114,11 +114,12 @@
 <script lang="ts">
 
 import { defineComponent, onMounted, ref } from 'vue';
-import apiServices from '~/plugins/ApiServices';
+import api from '~/server/api/axios';
 import { ElLoading } from 'element-plus';
 import { ElNotification } from 'element-plus';
 import { useMainStore } from '~/store';
 import LocalStorageManager from '~/utils/localStorage';
+import { JWT_KEY_ACEESS_TOKEN_NAME, USER_PROFILE_KEY_NAME } from '~/constants/application';
 
 export default defineComponent({
   name: 'Login',
@@ -135,16 +136,15 @@ export default defineComponent({
       event.preventDefault();
       ElLoading.service({ fullscreen: true });
 
-      await apiServices.auth.login(
+      await api.auth.login(
         userInfo.value,
         (res: any) => {
           ElLoading.service({ fullscreen: true }).close();
           notifySuccessAndRemoveValidateMessage();
-          setValueStoreLogin();
+          setValueStoreLogin(res);
           return navigateTo("");
         },
         (err: any) => {
-          console.log(err);
           ElLoading.service({ fullscreen: true }).close();
           validateMessageErrors.value = err.error;
         }
@@ -156,9 +156,11 @@ export default defineComponent({
       validateMessageErrors.value = [];
     }
 
-    const setValueStoreLogin = () => {
-      LocalStorageManager.setItemWithKey('isLoggedIn', true);
-      store.login(store.$state, null);
+    const setValueStoreLogin = async (data: any) => {
+      await LocalStorageManager.setItemWithKey('isLoggedIn', true);
+      await LocalStorageManager.setItemWithKey(JWT_KEY_ACEESS_TOKEN_NAME, data.token);
+      await LocalStorageManager.setItemWithKey(USER_PROFILE_KEY_NAME, data.user);
+      store.login(store.$state, data.user, data.token);
     }
 
     const checkLoginStatus = () => {

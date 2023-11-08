@@ -3,10 +3,10 @@
     class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
     id="layout-navbar"
   >
-    <div
-      class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
+    <div @click="responsiveSideBar"
+      class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 cursor-pointer"
     >
-      <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+      <a class="nav-item nav-link px-0 me-xl-4">
         <i class="ti ti-menu-2 ti-sm"></i>
       </a>
     </div>
@@ -74,55 +74,32 @@
           </ul>
         </li>
         <!--/ Notification -->
-        <!-- User -->
-        <li class="nav-item navbar-dropdown dropdown-user dropdown">
-          <a
-            class="nav-link dropdown-toggle hide-arrow"
-            href="javascript:void(0);"
-            data-bs-toggle="dropdown"
-          >
-            <div class="avatar avatar-online">
-              <img
-                src="../../assets/img/avatars/1.png"
-                alt
-                class="h-auto rounded-circle"
-              />
-            </div>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-              <a
-                class="dropdown-item"
-                href="pages-account-settings-account.html"
-              >
-                <div class="d-flex">
-                  <div class="flex-shrink-0 me-3">
-                    <div class="avatar avatar-online">
-                      <img
-                        src="../../assets/img/avatars/1.png"
-                        alt
-                        class="h-auto rounded-circle"
-                      />
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <span class="fw-semibold d-block">John Doe</span>
-                    <small class="text-muted">Admin</small>
-                  </div>
+        <el-dropdown>
+          <el-avatar :size="30" src="https://empty" @error="errorHandler">
+            <img
+              src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png?f=webp"
+            />
+          </el-avatar>
+          <template #dropdown>
+            <el-dropdown-menu class="dropdown-menu-elemement-plus">
+              <el-dropdown-item>
+                <el-avatar :size="70" src="https://empty" @error="errorHandler">
+                  <img
+                    src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png?f=webp"
+                  />
+                </el-avatar>
+
+                <div class="username-profile ms-2">
+                  {{ userInfo?.username }}
                 </div>
-              </a>
-            </li>
-            <li>
-              <div class="dropdown-divider"></div>
-            </li>
-            <li>
-              <a class="dropdown-item" href="pages-profile-user.html">
-                <i class="ti ti-user-check me-2 ti-sm"></i>
-                <span class="align-middle">My Profile</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+              </el-dropdown-item>
+              <div class="d-flex justify-content-center">
+                <el-dropdown-item>Profile</el-dropdown-item>
+                <el-dropdown-item @click="logout">Logout</el-dropdown-item>
+              </div>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
         <!--/ User -->
       </ul>
     </div>
@@ -140,7 +117,71 @@
 </template>
 
 <script>
-export default {
+import { defineComponent, ref } from "vue";
+import api from "~/server/api/axios";
+import { ElLoading } from "element-plus";
+import { ElNotification } from "element-plus";
+import LocalStorageManager from "~/utils/localStorage";
+import { JWT_KEY_ACEESS_TOKEN_NAME } from "~/constants/application";
+import { useMainStore } from "~/store";
+import { document } from "postcss";
+
+export default defineComponent({
+  components: {},
   name: "Navbar",
-};
+  props: {
+    displaySideBar: {
+      type: Boolean,
+      default: () => false,
+    }
+  },
+  setup(props, { emit }) {
+    const store = useMainStore();
+    let userInfo = ref(computed(() => store.$state.user));
+    const logout = async () => {
+      ElLoading.service({ fullscreen: true });
+      await api.auth.logout(
+        {},
+        (res) => {
+          ElLoading.service({ fullscreen: true }).close();
+          notifySuccessAndRemoveTokenJwt();
+          return navigateTo("/auth/login");
+        },
+        (err) => {
+          ElLoading.service({ fullscreen: true }).close();
+          ElNotification({
+            title: "Error",
+            message: err.error.shift(),
+            type: "error",
+          });
+          return navigateTo("/auth/login");
+        }
+      );
+    };
+
+    const notifySuccessAndRemoveTokenJwt = () => {
+      ElNotification({ title: "Success", type: "success" });
+      LocalStorageManager.removeItem(JWT_KEY_ACEESS_TOKEN_NAME);
+      LocalStorageManager.setItemWithKey("isLoggedIn", false);
+      store.logout(store.$state);
+    };
+
+    const responsiveSideBar = () => {
+      emit('closeOrOpenSideBar', !props.displaySideBar);
+    }
+
+    onMounted(() => {
+      
+    });
+
+    return {
+      logout,
+      userInfo,
+      responsiveSideBar,
+    };
+  },
+});
 </script>
+
+<style lang="scss" scoped>
+</style>
