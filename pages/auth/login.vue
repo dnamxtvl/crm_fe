@@ -152,7 +152,7 @@ export default defineComponent({
     };
 
     const notifySuccessAndRemoveValidateMessage = () => {
-      ElNotification({ title: 'Success', type: 'success'});
+      ElNotification({ title: 'Success', type: 'success', showClose: false });
       validateMessageErrors.value = [];
     }
 

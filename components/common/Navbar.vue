@@ -124,7 +124,6 @@ import { ElNotification } from "element-plus";
 import LocalStorageManager from "~/utils/localStorage";
 import { JWT_KEY_ACEESS_TOKEN_NAME } from "~/constants/application";
 import { useMainStore } from "~/store";
-import { document } from "postcss";
 
 export default defineComponent({
   components: {},
@@ -160,7 +159,7 @@ export default defineComponent({
     };
 
     const notifySuccessAndRemoveTokenJwt = () => {
-      ElNotification({ title: "Success", type: "success" });
+      ElNotification({ title: "Success", type: "success", showClose: false });
       LocalStorageManager.removeItem(JWT_KEY_ACEESS_TOKEN_NAME);
       LocalStorageManager.setItemWithKey("isLoggedIn", false);
       store.logout(store.$state);

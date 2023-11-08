@@ -1,7 +1,7 @@
-import AuthAPI from '~/services/AuthAPI';
+import AuthService from "~/services/AuthService";
 
 const api = {
-  auth: new AuthAPI('/'),
+  auth: new AuthService('/'),
 };
 
 export default api;

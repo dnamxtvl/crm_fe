@@ -13,7 +13,7 @@ export default class helperApp {
     LocalStorageManager.setItemWithKey('isLoggedIn', false);
     let store = useMainStore();
     store.logout(store.$state);
-    ElNotification({ title: 'Error', message: 'Token Expired!', type: 'error', });
+    ElNotification({ title: 'Error', message: 'Token Expired!', type: 'error', showClose: false });
     ElLoading.service({ fullscreen: true }).close();
   }
 };
