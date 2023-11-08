@@ -55,7 +55,6 @@ export default class BaseService {
     }
 
     async get(endpoint: string, success: (json: any) => void, error: (error: ErrorResponse) => void) {
-        const apiInstance = this.getInstanceAxios();
         try {
             const response = await this.getInstanceAxios().get(this.prefix + endpoint);
             const json = this.processResponse(response);
