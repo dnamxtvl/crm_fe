@@ -2,13 +2,14 @@ import { defineStore } from 'pinia';
 import LocalStorageManager from '~/utils/localStorage';
 import { USER_PROFILE_KEY_NAME } from '~/constants/application';
 import { JWT_KEY_ACEESS_TOKEN_NAME } from '~/constants/application';
+import CookieManager from '~/utils/cookies';
 
 export const useMainStore = defineStore({
   id: 'app',
   state: () => ({
     isLoggedIn: LocalStorageManager.getItemWithKey('isLoggedIn') ?? false,
     user: LocalStorageManager.getItemWithKey(USER_PROFILE_KEY_NAME) ?? null,
-    token: LocalStorageManager.getItemWithKey(JWT_KEY_ACEESS_TOKEN_NAME) ?? null,
+    token: CookieManager.getCookie(JWT_KEY_ACEESS_TOKEN_NAME) ?? null,
   }),
   getters: {
     isLoggedIn: (state: any) => state.isLoggedIn,

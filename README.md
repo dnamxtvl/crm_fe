@@ -1,77 +1,32 @@
-# Nuxt 3 Minimal Starter
+# Về ứng dụng
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## Setup
+1 Version nuxt 3.8 latest + thư viện ui gồm Bootrap 5.3.2 latest + Element-ui plus + môi trường node >=18
+    - Nuxtjs docs: https://nuxt.com/docs/getting-started/introduction
+    - Bootstrap 5 docs: https://getbootstrap.com/docs/5.0/getting-started/introduction/
+    - Element-ui plus: https://element-plus.org/en-US/
 
-Make sure to install the dependencies:
+2 Cài đặt:
+    - npm i && npm run dev
 
-```bash
-# npm
-npm install
+3 Cấu trúc thư mục dự án
+    - assets: Chứa font chữ,ảnh,css chung của dự án
+    - components: Các thành phần chia nhỏ từ các page để tái sử dụng
+    - composables: Chứa các file custom hook
+    - constans: Chứa các tham số config(rule validation,...)
+    - middleware: chứa các file middleware bảo vệ,điều hướng web,
+    - pages: Chứa các page của SPA (tự nhận route theo đường dẫn folder)
+    - plugins: Các file bên trong luôn chạy runtime khi nuxt chạy - hiện đang cấu hình pinia tại đây
+    - services: Chứa các service api - bên trong các file là các hàm call api.
+    - server: chứa file api.ts gồm các instance service api
+    - store: Nơi lưu,quản lý trạng thái state
+    - ultil: Gồm các file mà bên trong là các hàm helper dùng chung
 
-# pnpm
-pnpm install
+4 Lưu ý:
+    - Code theo cú pháp vue 3 update mới (Đối với các màn hình làm mới)
+    - Sử dụng arrow function (các code mới)
+    - Ui kết hợp linh hoạt bootstrap và element ui
 
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
-
-version nuxt 3.9 latest + bootrap 5.3.2 latest
+5 Luồng hoạt động:
+    - Mô tả sơ bộ: Sau khi các config được import,setup ở file nuxt.config -> app.vue -> pages/index.js (Mặc định đường dẫn http://your_url sẽ đi vào file pages/index.vue)
+    - Vd tạo 1 page pages/users/list.vue thì đường dẫn sẽ là http://your_url/users/list

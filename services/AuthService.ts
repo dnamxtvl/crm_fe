@@ -2,11 +2,11 @@ import BaseService from './BaseService';
 import API_CONST from '~/utils/api_const';
 
 export default class AuthService extends BaseService {
-    async login(params: Object, success: any, error: any) {
+    login = async (params: Object, success: any, error: any) => {
         await this.post(API_CONST.AUTH.LOGIN, params, success, error);
     }
 
-    async logout(params: Object, success: any, error: any) {
+    logout = async (params: Object, success: any, error: any) => {
         await this.post(API_CONST.AUTH.LOGOUT, params, success, error);
     }
 }

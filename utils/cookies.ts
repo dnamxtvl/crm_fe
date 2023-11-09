@@ -16,7 +16,7 @@ export default class CookieManager {
       return null;
     }
   
-    static setCookie = (cookieName: string, cookieValue: any) => {
+    static setCookie = async (cookieName: string, cookieValue: any) => {
       const date = new Date();
       const expirationDays = EXPIRES_COOKIE_DAY;
       date.setTime(date.getTime() + (expirationDays * 24 * 60 * 60 * 1000));

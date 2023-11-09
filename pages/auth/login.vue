@@ -120,6 +120,7 @@ import { ElNotification } from 'element-plus';
 import { useMainStore } from '~/store';
 import LocalStorageManager from '~/utils/localStorage';
 import { JWT_KEY_ACEESS_TOKEN_NAME, USER_PROFILE_KEY_NAME } from '~/constants/application';
+import CookieManager from '~/utils/cookies';
 
 export default defineComponent({
   name: 'Login',
@@ -158,7 +159,7 @@ export default defineComponent({
 
     const setValueStoreLogin = async (data: any) => {
       await LocalStorageManager.setItemWithKey('isLoggedIn', true);
-      await LocalStorageManager.setItemWithKey(JWT_KEY_ACEESS_TOKEN_NAME, data.token);
+      await CookieManager.setCookie(JWT_KEY_ACEESS_TOKEN_NAME, data.token);
       await LocalStorageManager.setItemWithKey(USER_PROFILE_KEY_NAME, data.user);
       store.login(store.$state, data.user, data.token);
     }
